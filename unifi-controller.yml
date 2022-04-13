@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  controller:
+    image: "jacobalberty/unifi:${TAG:-latest}"
+    container_name: unifi-controller
+    hostname: unifi
+    ports:
+      - "10.10.20.60:3478:3478/udp"   # STUN
+      - "10.10.20.60:6789:6789/tcp"   # Speed test
+      - "10.10.20.60:8080:8080/tcp"   # Device/ controller comm.
+      - "10.10.20.60:8443:8443/tcp"   # Controller GUI/API as seen in a web browser
+      - "10.10.20.60:8880:8880/tcp"   # HTTP portal redirection
+      - "10.10.20.60:8843:8843/tcp"   # HTTPS portal redirection
+      - "10.10.20.60:10001:10001/udp" # AP discovery
+    environment:
+      TZ: 'America/New York'
+    volumes:
+      - /var/unifi/data:/unifi/data
+      - /var/unifi/log:/unifi/log
+      - /etc/unifi/cert:/unifi/cert
+    init: true
+
+    restart: always
